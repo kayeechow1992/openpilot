@@ -24,35 +24,61 @@ const int BACKLIGHT_OFFROAD = 50;
 
 const float MIN_DRAW_DISTANCE = 10.0;
 const float MAX_DRAW_DISTANCE = 100.0;
-constexpr mat3 DEFAULT_CALIBRATION = {{ 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0 }};
+constexpr mat3 DEFAULT_CALIBRATION = {{0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0}};
 constexpr mat3 FCAM_INTRINSIC_MATRIX = (mat3){{2648.0, 0.0, 1928.0 / 2,
-                                           0.0, 2648.0, 1208.0 / 2,
-                                           0.0, 0.0, 1.0}};
+                                               0.0, 2648.0, 1208.0 / 2,
+                                               0.0, 0.0, 1.0}};
 // tici ecam focal probably wrong? magnification is not consistent across frame
 // Need to retrain model before this can be changed
 constexpr mat3 ECAM_INTRINSIC_MATRIX = (mat3){{567.0, 0.0, 1928.0 / 2,
-                                           0.0, 567.0, 1208.0 / 2,
-                                           0.0, 0.0, 1.0}};
-
+                                               0.0, 567.0, 1208.0 / 2,
+                                               0.0, 0.0, 1.0}};
 
 constexpr vec3 default_face_kpts_3d[] = {
-  {-5.98, -51.20, 8.00}, {-17.64, -49.14, 8.00}, {-23.81, -46.40, 8.00}, {-29.98, -40.91, 8.00}, {-32.04, -37.49, 8.00},
-  {-34.10, -32.00, 8.00}, {-36.16, -21.03, 8.00}, {-36.16, 6.40, 8.00}, {-35.47, 10.51, 8.00}, {-32.73, 19.43, 8.00},
-  {-29.30, 26.29, 8.00}, {-24.50, 33.83, 8.00}, {-19.01, 41.37, 8.00}, {-14.21, 46.17, 8.00}, {-12.16, 47.54, 8.00},
-  {-4.61, 49.60, 8.00}, {4.99, 49.60, 8.00}, {12.53, 47.54, 8.00}, {14.59, 46.17, 8.00}, {19.39, 41.37, 8.00},
-  {24.87, 33.83, 8.00}, {29.67, 26.29, 8.00}, {33.10, 19.43, 8.00}, {35.84, 10.51, 8.00}, {36.53, 6.40, 8.00},
-  {36.53, -21.03, 8.00}, {34.47, -32.00, 8.00}, {32.42, -37.49, 8.00}, {30.36, -40.91, 8.00}, {24.19, -46.40, 8.00},
-  {18.02, -49.14, 8.00}, {6.36, -51.20, 8.00}, {-5.98, -51.20, 8.00},
+    {-5.98, -51.20, 8.00},
+    {-17.64, -49.14, 8.00},
+    {-23.81, -46.40, 8.00},
+    {-29.98, -40.91, 8.00},
+    {-32.04, -37.49, 8.00},
+    {-34.10, -32.00, 8.00},
+    {-36.16, -21.03, 8.00},
+    {-36.16, 6.40, 8.00},
+    {-35.47, 10.51, 8.00},
+    {-32.73, 19.43, 8.00},
+    {-29.30, 26.29, 8.00},
+    {-24.50, 33.83, 8.00},
+    {-19.01, 41.37, 8.00},
+    {-14.21, 46.17, 8.00},
+    {-12.16, 47.54, 8.00},
+    {-4.61, 49.60, 8.00},
+    {4.99, 49.60, 8.00},
+    {12.53, 47.54, 8.00},
+    {14.59, 46.17, 8.00},
+    {19.39, 41.37, 8.00},
+    {24.87, 33.83, 8.00},
+    {29.67, 26.29, 8.00},
+    {33.10, 19.43, 8.00},
+    {35.84, 10.51, 8.00},
+    {36.53, 6.40, 8.00},
+    {36.53, -21.03, 8.00},
+    {34.47, -32.00, 8.00},
+    {32.42, -37.49, 8.00},
+    {30.36, -40.91, 8.00},
+    {24.19, -46.40, 8.00},
+    {18.02, -49.14, 8.00},
+    {6.36, -51.20, 8.00},
+    {-5.98, -51.20, 8.00},
 };
 
-
-typedef enum UIStatus {
+typedef enum UIStatus
+{
   STATUS_DISENGAGED,
   STATUS_OVERRIDE,
   STATUS_ENGAGED,
 } UIStatus;
 
-enum PrimeType {
+enum PrimeType
+{
   UNKNOWN = -2,
   UNPAIRED = -1,
   NONE = 0,
@@ -63,16 +89,16 @@ enum PrimeType {
   PURPLE = 5,
 };
 
-const QColor bg_colors [] = {
-  [STATUS_DISENGAGED] = QColor(0x17, 0x33, 0x49, 0xc8),
-  [STATUS_OVERRIDE] = QColor(0x91, 0x9b, 0x95, 0xf1),
-  [STATUS_ENGAGED] = QColor(0x17, 0x86, 0x44, 0xf1),
+const QColor bg_colors[] = {
+    [STATUS_DISENGAGED] = QColor(0x17, 0x33, 0x49, 0xc8),
+    [STATUS_OVERRIDE] = QColor(0x91, 0x9b, 0x95, 0xf1),
+    [STATUS_ENGAGED] = QColor(0x17, 0x86, 0x44, 0xf1),
 };
 
-
-typedef struct UIScene {
+typedef struct UIScene
+{
   bool calibration_valid = false;
-  bool calibration_wide_valid  = false;
+  bool calibration_wide_valid = false;
   bool wide_cam = true;
   mat3 view_from_calib = DEFAULT_CALIBRATION;
   mat3 view_from_wide_calib = DEFAULT_CALIBRATION;
@@ -101,15 +127,20 @@ typedef struct UIScene {
   bool started, ignition, is_metric, map_on_left, longitudinal_control;
   bool world_objects_visible = false;
   uint64_t started_frame;
+
+  // camera
+  int camera_view;
 } UIScene;
 
-class UIState : public QObject {
+class UIState : public QObject
+{
   Q_OBJECT
 
 public:
-  UIState(QObject* parent = 0);
+  UIState(QObject *parent = 0);
   void updateStatus();
-  inline bool engaged() const {
+  inline bool engaged() const
+  {
     return scene.started && (*sm)["controlsState"].getControlsState().getEnabled();
   }
 
@@ -146,13 +177,15 @@ private:
 UIState *uiState();
 
 // device management class
-class Device : public QObject {
+class Device : public QObject
+{
   Q_OBJECT
 
 public:
   Device(QObject *parent = 0);
   bool isAwake() { return awake; }
-  void setOffroadBrightness(int brightness) {
+  void setOffroadBrightness(int brightness)
+  {
     offroad_brightness = std::clamp(brightness, 0, 100);
   }
 

@@ -6,11 +6,12 @@
 #include "selfdrive/ui/qt/onroad/buttons.h"
 #include "selfdrive/ui/qt/widgets/cameraview.h"
 
-class AnnotatedCameraWidget : public CameraWidget {
+class AnnotatedCameraWidget : public CameraWidget
+{
   Q_OBJECT
 
 public:
-  explicit AnnotatedCameraWidget(VisionStreamType type, QWidget* parent = 0);
+  explicit AnnotatedCameraWidget(VisionStreamType type, QWidget *parent = 0);
   void updateState(const UIState &s);
 
   MapSettingsButton *map_settings_btn;
@@ -25,6 +26,7 @@ private:
   QString speedUnit;
   float setSpeed;
   float speedLimit;
+  int cameraView;
   bool is_cruise_set = false;
   bool is_metric = false;
   bool dmActive = false;
@@ -38,7 +40,7 @@ private:
   std::unique_ptr<PubMaster> pm;
 
   int skip_frame_count = 0;
-  bool wide_cam_requested = false;
+  bool wide_cam_requested = true;
 
 protected:
   void paintGL() override;

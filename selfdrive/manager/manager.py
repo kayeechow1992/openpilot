@@ -50,6 +50,7 @@ def manager_init() -> None:
     ("CameraControl", "2"),
     ("CameraControlToggle", "0"),
     ("CameraOffset", "0"),
+    ("CameraView", "2"),
     ("CarModel", ""),
     ("CarModelText", ""),
     ("ChevronInfo", "1"),

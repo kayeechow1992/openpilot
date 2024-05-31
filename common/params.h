@@ -9,7 +9,8 @@
 
 #include "common/queue.h"
 
-enum ParamKeyType {
+enum ParamKeyType
+{
   PERSISTENT = 0x02,
   CLEAR_ON_MANAGER_START = 0x04,
   CLEAR_ON_ONROAD_TRANSITION = 0x08,
@@ -19,18 +20,20 @@ enum ParamKeyType {
   ALL = 0xFFFFFFFF
 };
 
-class Params {
+class Params
+{
 public:
   explicit Params(const std::string &path = {});
   ~Params();
   // Not copyable.
-  Params(const Params&) = delete;
-  Params& operator=(const Params&) = delete;
+  Params(const Params &) = delete;
+  Params &operator=(const Params &) = delete;
 
   std::vector<std::string> allKeys() const;
   bool checkKey(const std::string &key);
   ParamKeyType getKeyType(const std::string &key);
-  inline std::string getParamPath(const std::string &key = {}) {
+  inline std::string getParamPath(const std::string &key = {})
+  {
     return params_path + params_prefix + (key.empty() ? "" : "/" + key);
   }
 
@@ -40,21 +43,30 @@ public:
 
   // helpers for reading values
   std::string get(const std::string &key, bool block = false);
-  inline bool getBool(const std::string &key, bool block = false) {
+  inline bool getBool(const std::string &key, bool block = false)
+  {
     return get(key, block) == "1";
+  }
+  inline int getInt(const std::string &key, bool block = false)
+  {
+    std::string value = get(key, block);
+    return value.empty() ? 0 : std::stoi(value);
   }
   std::map<std::string, std::string> readAll();
 
   // helpers for writing values
   int put(const char *key, const char *val, size_t value_size);
-  inline int put(const std::string &key, const std::string &val) {
+  inline int put(const std::string &key, const std::string &val)
+  {
     return put(key.c_str(), val.data(), val.size());
   }
-  inline int putBool(const std::string &key, bool val) {
+  inline int putBool(const std::string &key, bool val)
+  {
     return put(key.c_str(), val ? "1" : "0", 1);
   }
   void putNonBlocking(const std::string &key, const std::string &val);
-  inline void putBoolNonBlocking(const std::string &key, bool val) {
+  inline void putBoolNonBlocking(const std::string &key, bool val)
+  {
     putNonBlocking(key, val ? "1" : "0");
   }
 
